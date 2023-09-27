@@ -19,8 +19,7 @@ namespace FProjectCamping.Models.Services
             var order = new Order
             {
                 MemberId = memberId,
-                Name = vm.Name,
-                PhoneNum = vm.PhoneNum,
+                
                 // Email = vm.Email, 缺少...todo
                 OrderTime = DateTime.Now,
                 // Coupon = vm.Coupon, 缺少...todo..允許Null

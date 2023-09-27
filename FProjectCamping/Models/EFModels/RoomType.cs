@@ -17,6 +17,8 @@ namespace FProjectCamping.Models.EFModels
 
         public int Id { get; set; }
 
+        public int CampTypeId { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Name { get; set; }

@@ -11,8 +11,8 @@ using HttpGetAttribute = System.Web.Http.HttpGetAttribute;
 
 namespace FProjectCamping.Controllers.Rooms
 {
-    public class RoomsApiController : ApiController
-    {
+	public class RoomsApiController : ApiController
+	{
 		[HttpGet]
 		public IHttpActionResult GetRoomType()
 		{
@@ -25,8 +25,10 @@ namespace FProjectCamping.Controllers.Rooms
 				name = r.Name
 
 			});
-			
+
 			return Json(roomtypes);
 		}
+
+		
 	}
 }

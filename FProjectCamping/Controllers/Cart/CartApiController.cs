@@ -23,10 +23,10 @@ namespace FProjectCamping.Models.Carts
 		{
 			try
 			{
-				string currentUserAccount = User.Identity.Name; // 替换为实际的用户身份验证或会话信息获取方法
+				string currentUserAccount = User.Identity.Name;
 				var db = new AppDbContext();
 
-			
+
 				Cart userCart = db.Carts.FirstOrDefault(c => c.MemberAccount == currentUserAccount);
 
 				if (userCart == null)
@@ -39,25 +39,25 @@ namespace FProjectCamping.Models.Carts
 					db.Carts.Add(userCart);
 				}
 
-			
+
 				var cartItems = new CartItem
 				{
-					CartId = cartItemVm.CartId,
-					RoomId = 1,
+					CartId = 4,
+					RoomId = cartItemVm.RoomId,
 					CheckInDate = cartItemVm.CheckInDate,
 					CheckOutDate = cartItemVm.CheckOutDate,
 					ExtraBed = false,
 					ExtraBedPrice = cartItemVm.ExtraBedPrice,
-					Days = 3,
+					Days = cartItemVm.Days,
 					SubTotal = cartItemVm.SubTotal
 				};
 
 				userCart.CartItems.Add(cartItems);
 				userCart.TotalPrice += cartItemVm.SubTotal;
 
-				db.SaveChanges(); 
+				db.SaveChanges();
 
-			
+
 				var cartItemCount = userCart.CartItems.Count();
 				return Ok(new { count = cartItemCount });
 			}
@@ -69,22 +69,16 @@ namespace FProjectCamping.Models.Carts
 
 		}
 		[HttpGet]
-		public IHttpActionResult GetAvailableRooms()
+		public IHttpActionResult GetOrderedRoomIds()
 		{
 			try
 			{
 				var db = new AppDbContext();
 
-				// 获取已订购的房型ID列表
-				var OrderItemRoomIds = db.OrderItems.Select(o => o.RoomId).ToList();
+				// 获取已在 orderitem 中的 roomid 列表
+				var orderedRoomIds = db.OrderItems.Select(oi => oi.RoomId).ToList();
 
-				// 获取尚未订购的房型
-				var availableRooms = db.Rooms.Where(r => !OrderItemRoomIds.Contains(r.Id)).ToList();
-
-				// 只返回房型信息而不包括其他属性
-				var availableRoomIds = availableRooms.Select(r => r.Id).ToList();
-
-				return Ok(availableRoomIds);
+				return Ok(orderedRoomIds);
 			}
 			catch (Exception ex)
 			{

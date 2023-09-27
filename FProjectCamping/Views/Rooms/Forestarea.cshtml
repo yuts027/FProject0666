@@ -153,7 +153,7 @@
 
                             <div class="col-md-3">
                                 <div class="d-flex justify-content-start">
-                                    <a class="btn btn-success me-2" href="@Url.Action("Roomtype", "Rooms", new { area = "" })?roomTypeId=1" style="margin-bottom: -8px;">預約去</a>
+                                    <a class="btn btn-success me-2" href="@Url.Action("Roomtype", "Rooms", new { area = "" })?selectedRoomTypeId=1" style="margin-bottom: -8px;">預約去</a>
                                 </div>
                             </div>
                         </div>
@@ -294,10 +294,8 @@
 
                             <div class="col-md-3">
                                 <div class="d-flex justify-content-start">
-                                    <a class="btn btn-success me-2" href="@Url.Action("Roomtype", "Rooms", new { area = "" })?roomTypeId=2" style="margin-bottom: -8px;">預約去</a>
-
+                                    <a class="btn btn-success me-2" href="@Url.Action("Roomtype", "Rooms", new { area = "" })?selectedRoomTypeId=2" style="margin-bottom: -8px;">預約去</a>
                                 </div>
-                            </div>
                         </div>
 
                         <div>
@@ -534,3 +532,5 @@ margin-bottom: 10px;
 }
 </style>
 }
+
+

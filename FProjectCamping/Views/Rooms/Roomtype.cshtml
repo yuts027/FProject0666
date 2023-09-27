@@ -1,8 +1,8 @@
 ﻿@using FProjectCamping.Models.ViewModels.Roomtypes
 @{
     ViewBag.Title = "房型";
-    //var hotRooms = ViewBag.hotRooms as List<RoomtypeVM>;
-    var rooms = ViewBag.rooms as List<RoomtypeVM>
+    ////var hotRooms = ViewBag.hotRooms as List<RoomtypeVM>;
+    var hotrooms = ViewBag.hotrooms as List<RoomtypeVM>;
 }
 
 
@@ -35,77 +35,16 @@
             </div>
 
 
-            <div id="contentToShowByDefault">
-                <div id="doubleRoomInfo">
-                    <div class="row-room">
-                        <div class="row">
 
 
+            @foreach (var room in hotrooms)
+            {
 
-                            <div class="col-lg-5">
-                                <img src="~/Images/LINE_ALBUM_2023830_230910_5.jpg" alt="" class="img-fluid rounded" style="width:500px;object-fit:scale-down;">
-                            </div>
+                @Html.Partial("RoomsPartial", room);
 
-                            <div class="col-lg-7">
-                                <h2>A01森林區-南風苑雙人房</h2>
-                                <div class="separator3"></div>
-                                <ul>
-                                    <li>
-                                        平日價格：2800元
-                                    </li>
-                                    <li>
-                                        假日價格：3600元
-                                    </li>
-                                </ul>
-
-                                <div class="button-and-quantity-container">
-                                    <button type="button" id="btnOrder" class="btn btn-primary btnOrder">加入訂單</button>
-                                </div>
+            }
 
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                @{
-                    foreach(var r in rooms)
-                    {
-                        @Html.Partial("RoomsPartial", r);
-                    }
-                 }
-
-                <div id="otherRoomInfo2">
-                    <div class="row-room">
-                        <div class="row">
-                            <div class="col-lg-5">
-                                <img src="~/Images/LINE_ALBUM_2023830_230910_5.jpg" alt="" class="img-fluid rounded" style="width:500px;object-fit:scale-down;">
-                            </div>
-
-                            <div class="col-lg-7">
-                                <h2>C01河畔區-南風苑雙人房</h2>
-                                <div class="separator3"></div>
-                                <ul>
-                                    <li>
-                                        平日價格：2800元
-                                    </li>
-                                    <li>
-                                        假日價格：3600元
-                                    </li>
-
-                                </ul>
-                                <div class="button-and-quantity-container text-end">
-                                    <button type="button" class="btn btn-primary">加入訂單</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-            </div>
 
             <hr />
             <div class="text-end">
@@ -118,45 +57,6 @@
 
 @section scripts
 {
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const roomTypeId = urlParams.get('roomTypeId');
-
-
-        if (roomTypeId === '1') {
-
-            document.getElementById('doubleRoomInfo').style.display = 'block';
-
-            document.getElementById('otherRoomInfo1').style.display = 'none';
-            document.getElementById('otherRoomInfo2').style.display = 'none';
-            document.getElementById('otherRoomInfo3').style.display = 'none';
-
-        } else if (roomTypeId === '2') {
-
-            document.getElementById('otherRoomInfo1').style.display = 'block';
-
-            document.getElementById('doubleRoomInfo').style.display = 'none';
-            document.getElementById('otherRoomInfo2').style.display = 'none';
-            document.getElementById('otherRoomInfo3').style.display = 'none';
-
-        } else if (roomTypeId === '3') {
-
-            document.getElementById('otherRoomInfo2').style.display = 'block';
-
-            document.getElementById('doubleRoomInfo').style.display = 'none';
-            document.getElementById('otherRoomInfo1').style.display = 'none';
-            document.getElementById('otherRoomInfo3').style.display = 'none';
-
-        } else if (roomTypeId === '4') {
-            document.getElementById('otherRoomInfo3').style.display = 'block';
-
-            document.getElementById('doubleRoomInfo').style.display = 'none';
-            document.getElementById('otherRoomInfo1').style.display = 'none';
-            document.getElementById('otherRoomInfo2').style.display = 'none';
-        } else {
-
-        }
-    </script>
     <script>
         const roomtypeDropdown = document.getElementById('RoomtypeDropdown');
 
@@ -187,184 +87,203 @@
     </script>
 
 
-
     <script>
-        $(document).ready(function () {
-            $("#RoomtypeDropdown").change(function () {
-                const selectedRoomType = $(this).val();
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectedRoomTypeId = urlParams.get('selectedRoomTypeId');
 
-                if (selectedRoomType === '0') {
+            // 获取下拉列表元素
+            const roomtypeDropdown = document.getElementById('RoomtypeDropdown');
 
-                    $("#doubleRoomInfo, #otherRoomInfo1, #otherRoomInfo2, #otherRoomInfo3").show();
-                } else {
-
-                    $("#doubleRoomInfo, #otherRoomInfo1, #otherRoomInfo2, #otherRoomInfo3").hide();
-
-                    if (selectedRoomType === '1') {
-                        $("#doubleRoomInfo").show();
-                    } else if (selectedRoomType === '2') {
-                        $("#otherRoomInfo1").show();
-                    } else if (selectedRoomType === '3') {
-                        $("#otherRoomInfo2").show();
-                    } else if (selectedRoomType === '4') {
-                        $("#otherRoomInfo3").show();
-                    }
-                }
-            });
+            if (selectedRoomTypeId !== null) {
+                // 设置选中项
+                roomtypeDropdown.value = selectedRoomTypeId;
+            }
         });
     </script>
 
+    <script>
+
+let shouldRedirect = true; // 初始化为需要执行重定向
+
+roomtypeDropdown.addEventListener('change', function () {
+const selectedRoomTypeId = roomtypeDropdown.value;
+
+if (selectedRoomTypeId !== '0') {
+// 构建新的 URL，将选中的房型ID添加为查询参数
+const newUrl = `@Url.Action("Roomtype", "Rooms", new { area = "" })?selectedRoomTypeId=${selectedRoomTypeId}`;
+
+// 使用 AJAX 请求加载新页面的内容
+fetch(newUrl)
+.then(response => response.text())
+.then(data => {
+// 将加载的内容显示在页面中的某个元素中
+const contentElement = document.getElementById('content');
+if (contentElement) {
+contentElement.innerHTML = data;
+}
+
+// 如果需要执行页面重定向，则执行重定向
+if (shouldRedirect) {
+window.location.href = newUrl;
+}
+})
+.catch(error => {
+console.error(error);
+});
+} else {
+shouldRedirect = false; // 如果选择的是默认值，禁止执行重定向
+}
+});
+    </script>
+
+
+
+
+
+
 
     <script>
+        let checkInDate;
+        let checkOutDate;
+        let daysDifference;
+
         const arDateInput = document.getElementById('ar_date');
         const deDateInput = document.getElementById('de_date');
+
         document.addEventListener("DOMContentLoaded", function () {
-            var today = new Date();
-            today.setDate(today.getDate() + 1);
-            arDateInput.min = today.toISOString().split("T")[0];
+            var 今天 = new Date();
+            今天.setDate(今天.getDate() + 1);
+            arDateInput.min = 今天.toISOString().split("T")[0];
 
             arDateInput.addEventListener("change", function () {
                 var selectedDate = new Date(arDateInput.value);
+                checkInDate = selectedDate;
+
+                // 设置退房日期的最小值为入住日期的隔天
                 var nextDay = new Date(selectedDate);
                 nextDay.setDate(selectedDate.getDate() + 1);
-                deDateInput.value = nextDay.toISOString().split("T")[0];
+                deDateInput.min = nextDay.toISOString().split("T")[0];
+
+                // 检查退房日期是否早于入住日期
+                if (new Date(deDateInput.value) < selectedDate) {
+                    deDateInput.value = arDateInput.value; // 将退房日期设置为入住日期
+                }
 
                 var maxDate = new Date(selectedDate);
                 maxDate.setDate(selectedDate.getDate() + 14);
                 deDateInput.max = maxDate.toISOString().split("T")[0];
             });
         });
-    </script>
-
-
-    @*<script>
-        document.addEventListener("DOMContentLoaded", function () {
-        var arDateInput = document.getElementById("ar_date");
-        var deDateInput = document.getElementById("de_date");
-        var roomtypeDropdown = document.getElementById('RoomtypeDropdown');
-        var searchButton = document.getElementById('searchButton');
-        var searchResult = document.getElementById('searchResult');
-
-        searchButton.addEventListener('click', function () {
-        var selectedRoomType = roomtypeDropdown.value;
-        var checkInDate = arDateInput.value;
-        var checkOutDate = deDateInput.value;
-
-        if (selectedRoomType !== '0' && checkInDate && checkOutDate) {
-        $.ajax({
-        url: '/api/ValidateBooking',
-        type: 'POST',
-        data: {
-        RoomType: selectedRoomType,
-        CheckInDate: checkInDate,
-        CheckOutDate: checkOutDate
-        },
-        success: function (data) {
-        if (data.valid) {
-            searchResult.innerHTML = '房型可用，您可以預訂';
-        } else {
-            searchResult.innerHTML = '房型不可用，請選擇其他日期或房型。';
-        }
-        },
-        error: function (xhr, textStatus, errorThrown) {
-        console.error('發生錯誤:', errorThrown);
-        }
-        });
-        } else {
-        searchResult.innerHTML = '請選擇有效的日期和房型。';
-        }
-        });
-        });
-        </script>*@
-
-
-    @*<script>
-        const RoomtypeDropdown = document.getElementById('RoomtypeDropdown');
-        const arDateInput = document.getElementById('ar_date');
-        const deDateInput = document.getElementById('de_date');
-        const callApiButton = document.getElementById('btnOrder');
-
-
-        callApiButton.addEventListener('click', () => {
-        const selectedRoomType = RoomtypeDropdown.value;
-        const checkInDate = arDateInput.value;
-        const checkOutDate = deDateInput.value;
-
-        const requestData = {
-        cartId:9 ,
-        RoomId: selectedRoomType,
-        checkInDate: checkInDate,
-        checkOutDate: checkOutDate,
-        extraBed: false,
-        extraBedPrice: 500,
-        days: 3,
-        SubTotal: 5000,
-        };
-
-
-        $.ajax({
-        url: '/api/Cart/AddCartItem',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(requestData),
-        success: function (data) {
-
-        console.log('成功響應:', data);
-
-        },
-        error: function (xhr, textStatus, errorThrown) {
-
-        console.error('發生錯誤:', errorThrown);
-
-        }
-        });
-        });
-        </script>*@
-
-
-    <script>
-        var now = new Date();
-        var jsonCartVm = {
-            StartDateTime: now.toISOString(), // 使用 ISO 格式的字符串表示时间
-            EndDateTime: now.toISOString()
-        }
-
-        var num = 9;
         $(document).ready(function () {
-            $(".btnOrder").click(function () {
+            // 獲取按鈕元素
+            const btnOrder = $(".btnOrder");
 
-                //console.log("success");
-                //var jsonStrCartVm = JSON.stringify(jsonCartVm);
-                //fetch("/api/NewCarts?vm=" + jsonStrCartVm)
-                // .then(response => response.json())
-                //    .then(data => {
-                //        console.log(data);
-                //    })
-                //    .catch(error => {
-                //        console.error(error);
-                //    });
+            // 初始化為全局變量
+            let selectedRoomType;
+            let checkInDateValue;
+            let checkOutDateValue;
 
-                $.ajax({
-                    url: '/api/CartApi',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(jsonCartVm),
-                    success: function (data) {
-                        console.log('成功響應:', data);
+            // 初始時禁用按鈕
+            btnOrder.prop('disabled', true);
 
-                        updateCartItemCount(data.count);
-                        alert('已加入購物車');
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        console.error('發生錯誤:', errorThrown);
+            // 監聽 RoomtypeDropdown、ar_date 和 de_date 字段的變化
+            $("#RoomtypeDropdown, #ar_date, #de_date, #booking").on("change", function () {
+                selectedRoomType = $("#RoomtypeDropdown").val();
+                checkInDateValue = arDateInput.value;
+                checkOutDateValue = deDateInput.value;
+
+                // 如果所有字段都已選擇，啟用按鈕，否則禁用按钮
+                if (selectedRoomType && checkInDateValue && checkOutDateValue && $("#booking").is(":checked")) {
+                    btnOrder.prop('disabled', false);
+                } else {
+                    btnOrder.prop('disabled', true);
+                }
+            });
+
+            // 添加按鈕點擊事件監聽器
+            btnOrder.click(function () {
+                // 檢查是否所有字段都已選擇
+                if (selectedRoomType && checkInDateValue && checkOutDateValue) {
+                    const extraBed = false;
+                    const roomId = $(this).data("roomid");
+
+ 
+                    
+
+                    // 計算天數
+                    const timeDifference = new Date(checkOutDateValue) - new Date(checkInDateValue);
+                    daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+                    let SubTotal = 0;
+                    let currentDate = new Date(checkInDateValue);
+                    const hasExtraBed = true; /* 根据你的逻辑判断是否有加床 */
+
+                    while (currentDate < new Date(checkOutDateValue)) {
+                        const dayOfWeek = currentDate.getDay(); // 获取当前日期的星期几（0-6，0代表星期天，6代表星期六）
+                        let dailyPrice = 0;
+
+                        if (dayOfWeek === 6 || dayOfWeek === 0) {
+                            // 如果是星期六或星期日，使用价格2800
+                            dailyPrice = 2800;
+                        } else {
+                            // 否则使用默认价格2000
+                            dailyPrice = 2000;
+                        }
+
+                        // 如果有加床，在当前价格的基础上增加500
+                        if (hasExtraBed) {
+                            dailyPrice += 500;
+                        }
+
+                        SubTotal += dailyPrice;
+
+                        // 增加一天
+                        currentDate.setDate(currentDate.getDate() + 1);
                     }
-                })
+
+                    const requestData = {
+                        RoomId: roomId,
+                        CheckInDate: checkInDateValue,
+                        CheckOutDate: checkOutDateValue,
+                        ExtraBed: extraBed,
+                        Days: daysDifference,
+                        SubTotal: SubTotal, // 将总价传递到后端
+                    };
+
+                
+                   
+                    $.ajax({
+                        url: '/api/CartApi',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(requestData),
+                        success: function (data) {
+                            console.log('成功响应:', data);
+                            updateCartItemCount(data.count);
+                            alert('已加入購物車');
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            console.error('發生錯誤:', errorThrown);
+                        }
+                    });
+                } else {
+                    // 如果有任何一个字段未选择,禁用按钮或显示错误消息
+                    alert('请先选择所有必填字段');
+                    // 或者禁用按钮的方式如下：
+                    // btnOrder.prop('disabled', true);
+                }
+            });
+
+            // 在执行搜索后启用"加入订单"
+            $("#booking").click(function () {
+                // 执行搜索的逻辑
+
+                // 启用 "加入订单" 按钮
+                btnOrder.prop('disabled', false);
             });
         });
 
-    </script>
-
-    <script>
         function updateCartItemCount(count) {
             var cartItemCountElement = document.getElementById('cartItemCount');
             if (cartItemCountElement) {
@@ -372,123 +291,66 @@
             }
         }
     </script>
-    @*<script>
-        $("#booking").click(function () {
-        // 发送获取尚未订购房型的请求
-        $.ajax({
-        url: '/api/CartApi/GetAvailableRooms',
-        type: 'GET',
-        success: function (availableRoomIds) {
-        console.log('尚未订购的房型:', availableRoomIds);
 
-        // 在这里处理获取的尚未订购的房型数据
-        // 根据返回的房型ID列表来决定显示哪些房型
-        },
-        error: function (xhr, textStatus, errorThrown) {
-        console.error('发生错误:', errorThrown);
-        }
+
+    <script>
+        $(document).ready(function () {
+            // 獲取按鈕元素
+            const booking = $("#booking");
+
+            // 添加按鈕點擊事件監聽器
+            booking.click(function () {
+                // 發送AJAX請求已獲取已在ORDERITEM中的roomid列表
+                $.ajax({
+                    url: '/api/CartApi/GetOrderedRoomIds', // 替換為實際的API路由
+                    type: 'GET',
+                    success: function (orderedRoomIds) {
+                        console.log('已订购的房间 ID 列表:', orderedRoomIds);
+
+                        // 在這裡處理已訂購的房間ID數據
+                        // 根據返回的ROOMID列表過濾顯示的房型
+                        $(".btnOrder").each(function () {
+                            const roomId = $(this).data("roomid");
+                            if (orderedRoomIds.includes(roomId)) {
+                                $(this).hide(); // 隱藏已訂購的房型的按钮
+                            }
+                        });
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('发生错误:', errorThrown);
+                    }
+                });
+            });
         });
+    </script>
+    <script>
+        var roomTypeDropdown = document.getElementById('RoomtypeDropdown');
+
+        roomTypeDropdown.addEventListener("change", function () {
+            var selectedValue = roomTypeDropdown.value;
+
+            // 獲取帶有所有 data-roomid 屬性的房間
+            var rooms = $(".roomnumber");
+
+            if (selectedValue === '0') {
+                // 如果 selectedValue 為0，顯示所有房间
+                rooms.show();
+            } else {
+                // 否則，根據 selectedValue 顯示或隱藏房间
+                rooms.each(function () {
+                    let self = $(this)
+                    if (selectedValue == self.attr("data-roomid")) {
+                        self.show();
+                    } else {
+                        self.hide();
+                    }
+                });
+            }
         });
-        </script>*@
-
-
+    </script>
 
 }
 
 @section css{
-    <style type="text/css">
-
-        body {
-            background-image: url(../images/home_bg.png);
-            background-size: contain;
-            background-position: top;
-        }
-
-        .row-room {
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin: 3% 0 3%;
-            border-radius: 15px;
-        }
-
-        #containerWithBorder {
-            background-color: #6cb22c;
-            border: 2px solid #6cb22c;
-            display: flex;
-            justify-content: center;
-            padding: 6px;
-            border-radius: 10px;
-        }
-
-        #searchButton {
-            background-color: burlywood;
-            color: #6cb22c;
-        }
-
-            #searchButton:hover {
-                background-color: #fff;
-                color: #6cb22c;
-            }
-
-        .separator3 {
-            border-bottom: 3px solid green;
-            margin-bottom: 10px;
-        }
-
-        .button-and-quantity-container {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .spacer {
-            flex-grow: 0.01; /* 让间距元素填充剩余空间 */
-            margin: 0 10px; /* 设置左右间距 */
-        }
-
-        .quantity-selector {
-            display: flex;
-            justify-content: flex-end;
-            flex-direction: row;
-            padding: 5px; /* 保持水平布局 */
-        }
-
-        #contentToShowByDefault {
-            margin-top: 30px;
-        }
-
-        .container-fluid img {
-            margin-top: -80px;
-            width: 100%;
-            max-height: 550px;
-            object-fit: cover;
-            margin-bottom: 20px;
-        }
-
-        .captionqbookopen {
-            color: #fff;
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .mainarearoom {
-            max-width: 1000px;
-            margin: 2% auto;
-        }
-
-        .qbookboxpmar {
-            width: 100%;
-        }
-
-            .qbookboxpmar .inline-elements {
-                display: flex;
-                justify-content: space-around;
-                align-items: baseline;
-            }
-
-        .form-control {
-            width: 20%;
-        }
-    </style>
+    <link rel="stylesheet" href="~/Content/RoomType.css">
 }

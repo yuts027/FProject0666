@@ -231,6 +231,7 @@
     <Content Include="Content\main.css" />
     <Content Include="Content\main_all.css" />
     <Content Include="Content\main_member.css" />
+    <Content Include="Content\RoomType.css" />
     <Content Include="css\Cart.css" />
     <Content Include="css\ConfirmOrder.css" />
     <Content Include="css\main.css" />
@@ -272,6 +273,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="js\Roomtype.js" />
+    <Content Include="Roomtype.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
